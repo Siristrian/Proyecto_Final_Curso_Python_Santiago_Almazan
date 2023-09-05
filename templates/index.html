@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Suministros Informaticos</title>
+    <!-- Vinvulamos el html con el css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <!-- Introducimos el Tema personalizado Sketchy desde BootstrapCDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/litera/bootstrap.min.css" integrity="sha384-enpDwFISL6M3ZGZ50Tjo8m65q06uLVnyvkFO3rsoW0UC15ATBFz3QEhr3hmxpYsn" crossorigin="anonymous">
+    <!-- Fuente personalizada de Google Fonts: Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!--Barra de navegación con los distintos accesos que necesitamos para nuestra página y darle uniformidad al diseño-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <img class="icon" src="static\img\Icon.png" width="60px" height="60px">
+            <a class="navbar-brand" href="/">Suministros Informaticos</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/login_proveedores">Acceso Proveedores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/login_admin">Acceso Administrador</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/carro_compra">Cesta de compra</a>
+                    </li>
+                </ul>
+                <span class="navbar-text" style="float=right"><strong>Página principal</strong></span>
+            </div>
+        </div>
+    </nav></br>
+    <main class="container p-4">
+        <div class="row"> <!-- Indicamos que queremos que se organice la página en filas -->
+            <!-- Hacemos nuestras etiquetas de productos -->
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {%for producto in productos%}
+                <div class="card mb-3">
+                    <h6 class="card-header">{{producto.nombre}}</h6>
+                    <img src="/static/img/{{producto.id}}.png" class="d-block user-select-none imagen-card" width="100%" height="200" aria-label="Placeholder: Image cap">
+                    <div class="card-body">
+                        <p class="card-text">{{producto.tipo}}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Precio:</strong> {{producto.precio}} €</li>
+                        <li class="list-group-item"><strong>Cantidad:</strong> {{producto.cantidad}}</li>
+                        {%if producto.descuento > 0%}
+                        <li class="list-group-item"><strong>Descuento:</strong> {{producto.descuento}} %</li>
+                        <li class="list-group-item"><strong>Precio descontado:</strong> {{producto.precio_descontado}} €</li>
+                        {%endif%}
+                    </ul>
+                    <div class="card-body">
+                        <form action="/compra" method="post">
+                            <a type="submit" class="btn btn-primary" href="/carro_compra/{{producto.id}}">Añadir a la cesta</a>
+                            <!--Añadimos el id del producto para guardarlo en una memoria temporal hasta que se realice la compra-->
+                        </form></br>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+        <h4>Productos vendidos:</h4></br>
+        <!--Mostramos la gráfica de ventas-->
+        <ul>
+        {%for producto in productos%}
+            <li>{{producto.id}} => {{producto.nombre}}</li>
+        {%endfor%}
+        </ul>
+        <img src="data:image/png;base64, {{ grafica }}">
+    </main>
+</body>
+</html>

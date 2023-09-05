@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Acceso Administrador</title>
+    <!-- Vinvulamos el html con el css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <!-- Introducimos el Tema personalizado Sketchy desde BootstrapCDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/litera/bootstrap.min.css" integrity="sha384-enpDwFISL6M3ZGZ50Tjo8m65q06uLVnyvkFO3rsoW0UC15ATBFz3QEhr3hmxpYsn" crossorigin="anonymous">
+    <!-- Fuente personalizada de Google Fonts: Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body class="text-center">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <img class="icon" src="static\img\Icon.png" width="60px" height="60px">
+        <a class="navbar-brand" href="/">Suministros Informaticos</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+            </ul>
+            <span class="navbar-text" style="float=right"><strong>Login Administrador</strong></span>
+        </div>
+    </div>
+</nav></br>
+
+<main class="form-signin w-25 m-auto">
+    <form class="form--signin" action="/login_admin" method="POST">
+        <h1 class="h3 mb-3 fw-normal">Registro Administrador</h1>
+
+        <div class="form-floating">
+            <input type="text" class="form-control" id="administrador" name="administrador" placeholder="nombre administrador">
+            <label for="administrador">Usuario administrador</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="clave" name="clave" placeholder="Contraseña">
+            <label for="clave">Contraseña</label>
+        </div>
+        <a href="admin.html">
+            <button class="btn is-success btn-success mt-2" type="submit">Acceder</button>
+            {% if mensaje %}
+	            {{mensaje.error}}
+            {% endif %}
+            {# Mostrar mensajes / errores si es que existen #}
+                {% with mensajes_flash = get_flashed_messages() %}
+                {% if mensajes_flash %}
+                <div class="notification is-danger mt-2">
+                    {% for mensaje in mensajes_flash %}
+                    <li>{{ mensaje }}</li>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+        </a>
+    </form>
+</main>
+</body>
+</html>

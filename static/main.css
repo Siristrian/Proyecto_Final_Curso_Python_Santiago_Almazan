@@ -1,0 +1,12 @@
+/*Aquí estamos aplicándole un color al cuerpo de la página*/
+body {
+    background: #acb6e5;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #86fde8, #acb6e5);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #86fde8, #acb6e5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.card-header {
+    height: 100px;
+}
+.icon {
+    padding: 5px
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Suministros Informaticos - Proveedores</title>
+    <!-- Vinvulamos el html con el css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <!-- Introducimos el Tema personalizado Sketchy desde BootstrapCDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/litera/bootstrap.min.css" integrity="sha384-enpDwFISL6M3ZGZ50Tjo8m65q06uLVnyvkFO3rsoW0UC15ATBFz3QEhr3hmxpYsn" crossorigin="anonymous">
+    <!-- Fuente personalizada de Google Fonts: Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!--Barra de navegación-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <img class="icon" src="static\img\Icon.png" width="60px" height="60px">
+            <a class="navbar-brand" href="/">Suministros Informaticos</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                </ul>
+                <span class="navbar-text" style="float=right"><strong>Área del proveedor {{info_proveedor.proveedor}}</strong></span>
+            </div>
+        </div>
+    </nav></br>
+    <!--Hacemos 2 tablas para mostrar tanto la información del proveedor como la de los productos que tiene-->
+    <div class="container">
+        <section>
+        <!--Lista de los datos del proveedor-->
+        <h4>Información del proveedor:</h4></br>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Proveedor</th>
+                    <th scope="col">Teléfono</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">CIF</th>
+                    <th scope="col">Facturación</th>
+                    <th scope="col">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="row">{{info_proveedor.proveedor}}</td>
+                    <td>{{info_proveedor.telefono}}</td>
+                    <td>{{info_proveedor.direccion}}</td>
+                    <td>{{info_proveedor.cif}}</td>
+                    <td>{{info_proveedor.facturacion}} €</td>
+                    <!--Botón para editar la información-->
+                    <td>
+                         <a class="btn btn-sm btn-primary mt-2" href="/info_proveedor/{{info_proveedor.id}}" style="text-decoration:none">
+                             Editar
+                         </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table></br></br>
+
+        <h4>Información de los productos del proveedor:</h4></br>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Cantidad Requerida</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">IVA</th>
+                    <th scope="col">Descuento</th>
+                    <th scope="col">Dimensión</th>
+                    <th scope="col">Lugar</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for productos in lista_productos %}
+                <tr>
+                    <td scope="row">{{productos.nombre}}</td>
+                    <td>{{productos.tipo}}</td>
+                    {% if (productos.cantidad*100)/productos.cantidad_requerida < 90 %}
+                    <td><span class="badge rounded-pill bg-danger">{{productos.cantidad}}*</span></td>
+                    {%else%}
+                    <td>{{productos.cantidad}}</td>
+                    {%endif%}
+                    <!--Hacer mensaje para reponer productos si baja del 90%-->
+                    <td>{{productos.cantidad_requerida}}</td>
+                    <td>{{productos.precio}}</td>
+                    <td>{{productos.iva}}</td>
+                    <td>{{productos.descuento}}</td>
+                    <td>{{productos.dimension}}</td>
+                    <td>{{productos.lugar}}</td>
+                    <!--Botón para editar la información-->
+                    <td>
+                        <a class="btn btn-sm btn-primary mt-2" href="/info_producto/{{productos.id}}" style="text-decoration:none">
+                            Editar
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table></br>
+            <p>* Reponer la cantidad del producto, es menor al 90% de la cantidad requerida</p></br>
+        <h4>Información de Ventas:</h4></br>
+        <!--Mostramos la gráfica de ventas-->
+        <ul>
+        {%for producto in lista_productos%}
+            <li>{{producto.id}} => {{producto.nombre}}</li>
+        {%endfor%}
+        </ul>
+        <img src="data:image/png;base64, {{ grafica }}">
+    </section>
+    </div>
+</body>
+</html>
